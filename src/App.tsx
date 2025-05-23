@@ -1,16 +1,14 @@
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom'
 import ThemeToggle from './components/ThemeToggle/ThemeToggle'
 import MainPage from './pages/MainPage'
 import './App.css'
 import Layout from './Layout'
 import TbdPage from './pages/TbdPage'
+import useLocalStorage from './hooks/useLocalStorage'
 
 function App() {
-  const [theme, setTheme] = useState<'light' | 'dark'>(() => {
-    const stored = localStorage.getItem('theme')
-    return stored === 'dark' || stored === 'light' ? stored : 'light'
-  })
+  const [theme, setTheme] = useLocalStorage<'light' | 'dark'>('theme', 'light');
 
   useEffect(() => {
     const root = window.document.documentElement
@@ -18,7 +16,6 @@ function App() {
     root.classList.add(theme)
     localStorage.setItem('theme', theme)
   }, [theme])
-
 
   return (
     <Router>
