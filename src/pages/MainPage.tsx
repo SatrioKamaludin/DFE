@@ -1,11 +1,38 @@
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { useState } from 'react'
+import { useCallback, useEffect, useReducer, useRef } from 'react'
 import reactLogo from '../assets/react.svg'
 import viteLogo from '/vite.svg'
 
+type CounterAction = { type: 'increment' } | { type: 'reset' }
+function counterReducer(state: number, action: CounterAction): number {
+  switch (action.type) {
+    case 'increment':
+      return state + 1
+    case 'reset':
+      return 0
+    default:
+      return state
+  }
+}
+
 function MainPage() {
-  const [count, setCount] = useState(0)
+  const [count, dispatch] = useReducer(counterReducer, 0)
+
+  const buttonRef = useRef<HTMLButtonElement>(null);
+
+  const handleIncrement = useCallback(() => {
+    dispatch({ type: 'increment' });
+  }, [])
+
+  const handleReset = useCallback(() => {
+    dispatch({ type: 'reset' });
+  }, [])
+
+  useEffect(() => {
+    buttonRef.current?.focus();
+  }, [count])
+
   return (
     <>
       <div className="flex space-x-4 mb-8 items-center justify-center">
@@ -24,9 +51,20 @@ function MainPage() {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          <Button onClick={() => setCount((prev) => prev + 1)} className="mb-4">
+          <Button
+            onClick={handleIncrement}
+            ref={buttonRef}
+          >
             count is {count}
           </Button>
+          <Button
+            variant="outline"
+            onClick={handleReset}
+          >
+            Reset
+          </Button>
+          <br />
+          <br />
           <p className="text-sm text-muted-foreground">
             Edit <code className="font-mono">src/App.tsx</code> and save to test HMR
           </p>
