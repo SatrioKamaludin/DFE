@@ -4,10 +4,15 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger
+  DropdownMenuTrigger,
 } from '../ui/dropdown-menu';
 
-function ThemeToggle({ theme, setTheme }: { theme: 'light' | 'dark'; setTheme: (t: 'light' | 'dark') => void }) {
+interface ThemeToggleProps {
+  theme: 'light' | 'dark'
+  setTheme: (t: 'light' | 'dark') => void
+  label?: string
+}
+function ThemeToggle({ theme, setTheme, label }: ThemeToggleProps) {
   const handleSelect = (value: string) => {
     if (value === 'light' || value === 'dark') setTheme(value)
   }
@@ -15,7 +20,7 @@ function ThemeToggle({ theme, setTheme }: { theme: 'light' | 'dark'; setTheme: (
     <div className='absolute top-4 right-4'>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" size="icon" aria-label='Select Theme'>
+          <Button variant="ghost" size="icon" aria-label={label}>
             {theme === 'light' ? 'Light' : 'Dark'}
           </Button>
         </DropdownMenuTrigger>
@@ -30,6 +35,9 @@ function ThemeToggle({ theme, setTheme }: { theme: 'light' | 'dark'; setTheme: (
       </DropdownMenu>
     </div>
   )
+}
+ThemeToggle.defaultProps = {
+  label: 'Toggle theme',
 }
 
 export default ThemeToggle

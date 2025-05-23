@@ -1,7 +1,11 @@
-import { Link, useLocation } from "react-router-dom"
-import { Tabs, TabsList, TabsTrigger } from "./components/ui/tabs"
+import { Link, useLocation } from 'react-router-dom'
+import { Tabs, TabsList, TabsTrigger } from './components/ui/tabs'
+import type { ReactNode } from 'react'
 
-function Layout({ children }: { children: React.ReactNode }) {
+interface LayoutProps {
+  readonly children: ReactNode
+}
+function Layout({ children }: LayoutProps) {
   const { pathname } = useLocation()
   const activeTab = pathname === '/tbd' ? 'tbd' : 'main'
 
@@ -20,6 +24,9 @@ function Layout({ children }: { children: React.ReactNode }) {
       {children}
     </div>
   )
+}
+Layout.defaultProps = {
+  children: null,
 }
 
 export default Layout
